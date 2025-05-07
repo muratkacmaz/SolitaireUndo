@@ -1,7 +1,12 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+///
+///  State class that encapsulates a value and provides a mechanism
+///  to notify when the value changes.
+///  It was not used in the project but is a good example of how to implement
+/// 
+/// </summary>
 public class State<T>
 {
     Func<T, T> setter;
@@ -22,14 +27,7 @@ public class State<T>
         get => v;
         set
         {
-            if (setter != null)
-            {
-                this.v = setter.Invoke(value);
-            }
-            else
-            {
-                this.v = value;
-            }
+            this.v = setter != null ? setter.Invoke(value) : value;
 
             Changed?.Invoke(value);
         }

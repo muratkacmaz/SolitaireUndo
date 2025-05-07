@@ -31,6 +31,9 @@ public class CardDragController : MonoBehaviour
         _originalStack = _card.CurrentStack;
         
         // Check if the card is the last card in the stack
+        // I know you can grab more than one card in solitaire
+        // but I just implemented the logic for one card
+        
         if (_originalStack == null || _originalStack.PeekCard() != _card)
         {
             _isDragging = false;
@@ -46,6 +49,7 @@ public class CardDragController : MonoBehaviour
         SetCardSortingOrder(100);
     }
 
+    // Enable the highlight effect on the card
     private void EnableHighlight()
     {
         CardHighlightRenderer.gameObject.SetActive(true);
@@ -64,6 +68,9 @@ public class CardDragController : MonoBehaviour
             DragCard();
     }
 
+    /// <summary>
+    /// Updates the card's position while dragging.
+    /// </summary>
     private void DragCard()
     {
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -92,6 +99,11 @@ public class CardDragController : MonoBehaviour
         CardHighlightRenderer.sortingOrder = 0;
     }
 
+    
+    /// <summary>
+    /// Attempts to snap the card to a valid stack.
+    /// </summary>
+    /// <returns>True if the card was successfully snapped to a stack, otherwise false.</returns>
     private bool TrySnapToStack()
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.zero);

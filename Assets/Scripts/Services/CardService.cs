@@ -3,6 +3,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
+/// <summary>
+/// Manages card-related operations, including initialization and stack management.
+/// </summary>
 public class CardService : Service
 {
     [SerializeField] private List<CardStack> CardStacks;
@@ -18,6 +21,9 @@ public class CardService : Service
         InitializeCardStacks();
     }
 
+    /// <summary>
+    /// Loads card data assets asynchronously.
+    /// </summary>
     private async UniTask LoadAssetsAsync()
     {
         _cardData = await Addressables.LoadAssetAsync<CardData>("CardData");
@@ -25,6 +31,9 @@ public class CardService : Service
             Debug.LogError($"Failed to load CardData");
     }
 
+    /// <summary>
+    /// Initializes the card stacks with random cards.
+    /// </summary>
     private async void InitializeCardStacks()
     {
         foreach (var stack in CardStacks)
@@ -42,5 +51,4 @@ public class CardService : Service
             }
         }
     }
-    
 }
