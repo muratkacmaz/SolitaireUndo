@@ -99,6 +99,9 @@ public class CardDragController : MonoBehaviour
         {
             CardStack newStack = hit.collider.GetComponent<CardStack>();
             if (newStack == null) continue;
+            
+            var moveService = ServiceProvider.Instance.Get<MoveService>();
+            moveService.RegisterMove(_card, _originalStack, newStack);
             newStack.AddCardToStack(_card);
             return true;
         }
