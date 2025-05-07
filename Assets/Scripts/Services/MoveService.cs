@@ -22,7 +22,14 @@ public class MoveService : Service
         }
         else
         {
-            Debug.LogError("No moves to undo.");
+            var uiService = ServiceProvider.Instance.Get<UIService>();
+            
+            var errorData = new ErrorPopupData
+            {
+                ErrorMessage = "No moves to undo"
+            };
+            
+            uiService.LoadPopup("ErrorPopup", errorData);
         }
     }
 }

@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ErrorPopup : MonoBehaviour
+public class ErrorPopup : BasePopup<ErrorPopupData>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TextMeshProUGUI errorText;
+    [SerializeField] private Button closeButton;
+
+    public override void SetPopupData(BasePopupData data)
     {
+        base.SetPopupData(data);
+        if (PopupData == null) return;
         
+        errorText.text = PopupData.ErrorMessage;
+        closeButton.onClick.AddListener(OnCloseButtonClicked);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCloseButtonClicked()
     {
-        
+        Destroy(gameObject);
     }
+}
+
+public class ErrorPopupData : BasePopupData
+{
+    public string ErrorMessage;
 }
