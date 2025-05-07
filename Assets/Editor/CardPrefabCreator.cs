@@ -2,20 +2,33 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// A custom editor window for creating card prefabs from card data.
+/// </summary>
 public class CardPrefabCreator : EditorWindow
 {
-    private string cardBasePath = "Assets/Prefabs/_cardBase.prefab";
-    private string spritesPath = "Assets/2D Cards Game Art Pack/Sprites/Standard 52 Cards/Standard Rounded Cards";
+    private string prefabSavePath = "Assets/Prefabs/Cards";
+    private GameObject cardPrefabTemplate;
+    private CardData cardData;
 
+    /// <summary>
+    /// Adds a menu item to open the Card Prefab Creator window.
+    /// </summary>
     [MenuItem("Tools/Card Prefab Creator")]
     public static void ShowWindow()
     {
         GetWindow<CardPrefabCreator>("Card Prefab Creator");
     }
 
+    /// <summary>
+    /// Renders the GUI for the editor window.
+    /// </summary>
     private void OnGUI()
     {
         GUILayout.Label("Card Prefab Creator", EditorStyles.boldLabel);
+
+        cardPrefabTemplate = (GameObject)EditorGUILayout.ObjectField("Card Prefab Template", cardPrefabTemplate, typeof(GameObject), false);
+        cardData = (CardData)EditorGUILayout.ObjectField("Card Data", cardData, typeof(CardData), false);
 
         if (GUILayout.Button("Create Card Prefabs"))
         {
@@ -23,44 +36,41 @@ public class CardPrefabCreator : EditorWindow
         }
     }
 
+    /// <summary>
+    /// Creates card prefabs using the provided card data and saves them to the specified directory.
+    /// </summary>
     private void CreateCardPrefabs()
     {
-        GameObject cardBasePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(cardBasePath);
-        if (cardBasePrefab == null)
+        if (cardPrefabTemplate == null || cardData == null)
         {
-            Debug.LogError($"Card base prefab not found at path: {cardBasePath}");
+            Debug.LogError("Card Prefab Template or Card Data is missing.");
             return;
         }
 
-        string[] spriteFolders = Directory.GetDirectories(spritesPath);
-        foreach (string folder in spriteFolders)
+        if (!Directory.Exists(prefabSavePath))
         {
-            string[] spritePaths = Directory.GetFiles(folder, "*.png");
-            foreach (string spritePath in spritePaths)
+            Directory.CreateDirectory(prefabSavePath);
+        }
+
+        foreach (var cardInfo in cardData.Cards)
+        {
+            GameObject cardInstance = Instantiate(cardPrefabTemplate);
+            cardInstance.name = $"{cardInfo.Suit}_{cardInfo.CardValue}";
+
+            var cardComponent = cardInstance.GetComponent<Card>();
+            if (cardComponent != null)
             {
-                Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
-                if (sprite == null) continue;
-
-                GameObject newCard = PrefabUtility.InstantiatePrefab(cardBasePrefab) as GameObject;
-                if (newCard == null) continue;
-
-                SpriteRenderer spriteRenderer = newCard.GetComponentInChildren<SpriteRenderer>();
-                if (spriteRenderer != null)
-                {
-                    spriteRenderer.sprite = sprite;
-                }
-
-                string prefabName = $"{sprite.name}.prefab";
-                string savePath = $"Assets/Prefabs/{prefabName}";
-                
-
-                PrefabUtility.SaveAsPrefabAsset(newCard, savePath);
-                DestroyImmediate(newCard);
+                cardComponent.SetCardInfo(cardInfo.Suit, cardInfo.CardValue, cardInfo.Image);
             }
+
+            string prefabPath = Path.Combine(prefabSavePath, $"{cardInstance.name}.prefab");
+            PrefabUtility.SaveAsPrefabAsset(cardInstance, prefabPath);
+            DestroyImmediate(cardInstance);
         }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log("Card prefabs created successfully.");
+
+        Debug.Log($"Card prefabs created and saved to: {prefabSavePath}");
     }
 }
