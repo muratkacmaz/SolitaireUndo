@@ -15,7 +15,7 @@ public class CardMove : IMove
     public void Undo()
     {
         _targetStack.RemoveCardFromStack(_card);
-        _sourceStack.AddCardToStack(_card);
+        _sourceStack.AddCardToStack(_card, 2f);
     }
 }
 

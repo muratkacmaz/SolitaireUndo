@@ -14,8 +14,7 @@ public class UIService : Service
     {
         var gameViewData = new GameViewData
         {
-            GameTitle = "Undo it all",
-            MoveCount = 0
+            GameTitle = "Undo it all"
         };
 
         LoadPopup("GameView", gameViewData);
