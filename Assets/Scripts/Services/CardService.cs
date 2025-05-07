@@ -32,7 +32,7 @@ public class CardService : Service
             for (var i = 0; i < INITIALCARDCOUNT; i++) 
             {
                 var randomCardInfo = _cardData.Cards[Random.Range(0, _cardData.Cards.Count)];
-                var card = await Addressables.InstantiateAsync("Card",transform);
+                var card = await Addressables.InstantiateAsync("Card", transform);
                 var cardComponent = card.GetComponent<Card>();
 
                 // Assign card info from CardData
