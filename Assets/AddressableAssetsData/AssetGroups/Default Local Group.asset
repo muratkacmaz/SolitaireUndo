@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d267834bdfd3f447c85b3ae1b084a224
+    m_Address: ErrorPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df5847f359b5e4ffdbfb6c2fdebb5c85
     m_Address: Card
     m_ReadOnly: 0
