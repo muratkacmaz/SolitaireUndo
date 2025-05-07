@@ -5,7 +5,6 @@ public class CardDragController : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer CardHighlightRenderer;
     private Vector3 _offset;
-    private Vector3 _originalPosition;
     private CardStack _originalStack;
     private SpriteRenderer _cardRenderer;
     private bool _isDragging;
@@ -29,20 +28,16 @@ public class CardDragController : MonoBehaviour
 
     private void StartDragging()
     {
-        _originalPosition = transform.position;
         _originalStack = _card.CurrentStack;
         
         // Check if the card is the last card in the stack
-        if (_originalStack != null && _originalStack.PeekCard() == _card)
-        {
-            _originalStack.RemoveCardFromStack(_card);
-        }
-        else
+        if (_originalStack == null || _originalStack.PeekCard() != _card)
         {
             _isDragging = false;
             return;
         }
-
+        
+        _originalStack.RemoveCardFromStack(_card);
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _offset = transform.position - new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0);
         _isDragging = true;

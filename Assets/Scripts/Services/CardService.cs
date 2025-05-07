@@ -1,28 +1,38 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
-public class CardManager : Service
+public class CardService : Service
 {
-    [SerializeField] private GameObject CardPrefab;
-    [SerializeField] private CardData CardData;
     [SerializeField] private List<CardStack> CardStacks;
     [SerializeField] private float cardGap = 0.3f; // Gap between cards in the stack
     
     private const int INITIALCARDCOUNT = 3; // Number of cards to instantiate per stack
+    private CardData _cardData;
+    private GameObject _cardPrefab;
     
-    private void Start()
+    private async void Start()
     {
+        await LoadAssetsAsync();
         InitializeCardStacks();
     }
 
-    private void InitializeCardStacks()
+    private async UniTask LoadAssetsAsync()
+    {
+        _cardData = await Addressables.LoadAssetAsync<CardData>("CardData");
+        if (_cardData == null)
+            Debug.LogError($"Failed to load CardData");
+    }
+
+    private async void InitializeCardStacks()
     {
         foreach (var stack in CardStacks)
         {
             for (var i = 0; i < INITIALCARDCOUNT; i++) 
             {
-                var randomCardInfo = CardData.Cards[Random.Range(0, CardData.Cards.Count)];
-                var card = Instantiate(CardPrefab, transform);
+                var randomCardInfo = _cardData.Cards[Random.Range(0, _cardData.Cards.Count)];
+                var card = await Addressables.InstantiateAsync("Card",transform);
                 var cardComponent = card.GetComponent<Card>();
 
                 // Assign card info from CardData

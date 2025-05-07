@@ -7,6 +7,12 @@ public class CardStack : MonoBehaviour
 
     [SerializeField] private float cardGap = 0.3f; // Gap between cards in the stack
     public int CardCount => _cards.Count;
+    
+    private void Start()
+    {
+        GameState.CardMoveStarted += () => {GetComponent<BoxCollider2D>().enabled = true;};
+        GameState.CardMoveEnded += () => {GetComponent<BoxCollider2D>().enabled = false;};
+    }
 
     public void AddCardToStack(Card card)
     {
@@ -24,13 +30,15 @@ public class CardStack : MonoBehaviour
             spriteRenderer.sortingOrder = _cards.Count - 1;
 
         card.SetStack(this);
+        GameState.CardMoveEnded?.Invoke();
     }
 
-    public Card RemoveCardFromStack(Card card)
+    public void RemoveCardFromStack(Card card)
     {
+        card.SetStack(null);
         var removedCard = _cards.Pop();
         removedCard.transform.SetParent(null); // Detach from stack
-        return removedCard;
+        GameState.CardMoveStarted?.Invoke();
     }
 
     public Card PeekCard()
