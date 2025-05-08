@@ -8,9 +8,6 @@ public class CardMove : IMove
     /// <summary>
     /// Initializes a new instance of the CardMove class.
     /// </summary>
-    /// <param name="card">The card to move.</param>
-    /// <param name="sourceStack">The source stack of the card.</param>
-    /// <param name="targetStack">The target stack of the card.</param>
     public CardMove(Card card, CardStack sourceStack, CardStack targetStack)
     {
         _card = card;

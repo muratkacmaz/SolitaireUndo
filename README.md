@@ -40,6 +40,12 @@ The project includes custom editor scripts to streamline development:
 
 These tools can be accessed from the Unity Editor under the `Tools` menu, making it easier to manage card assets and prefabs.
 
+## Development Environment
+- **IDE**: The project was developed using JetBrains Rider 2025.1.1, providing robust tools for C# and Unity development.
+- **AI Tools**: GitHub Copilot was used to assist with code generation, documentation, and improving development efficiency.
+- **Version Control**: Fork was used for Git version control to manage changes and contributions.
+
+
 ## Future Improvements
 - Add support for multi-card dragging.
 - Implement additional game rules and logic.
