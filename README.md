@@ -1,4 +1,4 @@
-# Project Title
+# Undo It All
 
 ## Overview
 This project is a Unity-based card game that implements move and undo functionality, card stack management, and drag-and-drop interactions. The architecture is designed to be modular, scalable, and easy to maintain, with clear separation of concerns between services, UI, and game logic.
@@ -41,7 +41,7 @@ The project includes custom editor scripts to streamline development:
 These tools can be accessed from the Unity Editor under the `Tools` menu, making it easier to manage card assets and prefabs.
 
 ## Development Environment
-- **IDE**: The project was developed using JetBrains Rider 2025.1.1, providing robust tools for C# and Unity development.
+- **IDE**: The project was developed using JetBrains Rider 2025.1.1, providing tools for C# and Unity development.
 - **AI Tools**: GitHub Copilot was used to assist with code generation, documentation, and improving development efficiency.
 - **Version Control**: Fork was used for Git version control to manage changes and contributions.
 
